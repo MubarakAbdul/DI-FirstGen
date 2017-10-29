@@ -1,0 +1,1453 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import math\n",
+    "import datetime\n",
+    "import time\n",
+    "from numpy import array\n",
+    "import requests"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (6,9,1725,1726,1727,1728,1729,1743) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (6,1169,1170,1171,1172,1173,1174,1175,1177,1178,1179,1183,1184,1185,1186,1187,1188,1196,1199,1200,1201,1209,1212,1213,1214,1222,1223,1224,1225,1226,1227,1235,1236,1237,1238,1239,1240,1248,1250,1251,1252,1253,1255,1257,1261,1263,1264,1265,1266,1268,1270,1274,1275,1276,1277,1278,1279,1283,1287,1288,1289,1290,1291,1292,1296,1303,1316,1326,1327,1328,1329,1330,1331,1335,1339,1340,1341,1342,1343,1344,1348,1379,1380,1381,1382,1383,1384,1385,1386,1387,1388,1389,1390,1391,1392,1393,1394,1395,1396,1397,1398,1399,1400,1401,1402,1403,1404,1405,1406,1407,1411,1426,1427,1475,1476,1479,1480,1483,1484,1487,1488,1489,1490,1491,1492,1493,1494,1495,1496,1497,1498,1499,1500,1501,1502,1503,1517,1529,1530,1532,1537,1540,1541,1542,1575,1576,1577,1578,1579,1580,1581,1582,1583,1584,1585,1586,1587,1588,1589,1590,1591,1592,1593,1594,1595,1596,1597,1598,1599,1600,1601,1602,1606,1609,1610,1613,1614,1615,1708,1729) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1537,1540,1542,1547,1548,1549,1561,1575,1606,1614,1615,1729) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1537,1540,1542,1575,1606,1614,1615,1729) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1,6,1461,1561,1729) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1,1537,1540,1542,1606,1614,1615) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1,1447,1537,1540,1542,1606,1614,1615) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1,6,1408,1431,1432,1433,1475,1489,1537,1538,1539,1540,1542,1606,1610,1611,1614,1615,1616,1729) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2698: DtypeWarning: Columns (1,6,442,451,598,607,611,620,624,633,789,802,806,815,893,906,971,984,997,1153,1166,1407,1408,1411,1424,1425,1426,1431,1432,1433,1437,1438,1439,1440,1445,1446,1447,1451,1452,1453,1454,1459,1460,1461,1465,1466,1467,1468,1473,1474,1475,1479,1480,1481,1482,1487,1488,1489,1501,1502,1537,1538,1539,1540,1541,1542,1606,1609,1610,1611,1613,1614,1615,1616,1688,1689,1690,1691,1692) have mixed types. Specify dtype option on import or set low_memory=False.\n",
+      "  interactivity=interactivity, compiler=compiler, result=result)\n"
+     ]
+    }
+   ],
+   "source": [
+    "dfa = pd.read_csv('MERGED2015_16_PP.csv')\n",
+    "dfb = pd.read_csv('MERGED2014_15_PP.csv')\n",
+    "dfc = pd.read_csv('MERGED2013_14_PP.csv')\n",
+    "dfd = pd.read_csv('MERGED2012_13_PP.csv')\n",
+    "dfe = pd.read_csv('MERGED2011_12_PP.csv')\n",
+    "dff = pd.read_csv('MERGED2010_11_PP.csv')\n",
+    "dfg = pd.read_csv('MERGED2009_10_PP.csv')\n",
+    "dfh = pd.read_csv('MERGED2008_09_PP.csv')\n",
+    "dfi = pd.read_csv('MERGED2007_08_PP.csv')\n",
+    "dfj = pd.read_csv('MERGED2006_07_PP.csv')\n",
+    "dfk = pd.read_csv('MERGED2005_06_PP.csv')\n",
+    "dfl = pd.read_csv('MERGED2004_05_PP.csv')\n",
+    "dfm = pd.read_csv('MERGED2003_04_PP.csv')\n",
+    "dfn = pd.read_csv('MERGED2002_03_PP.csv')\n",
+    "dfo = pd.read_csv('MERGED2001_02_PP.csv')\n",
+    "dfp = pd.read_csv('MERGED2000_01_PP.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df = pd.concat([dfa,dfb,dfc,dfd,dfe,dff,dfg,dfh,dfi,dfj,dfk,dfl,dfm,dfn,dfo,dfp], axis=0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['UNITID', 'OPEID', 'OPEID6', 'INSTNM', 'CITY', 'STABBR', 'ZIP',\n",
+       "       'ACCREDAGENCY', 'INSTURL', 'NPCURL',\n",
+       "       ...\n",
+       "       'D150_L4_WHITENH', 'D150_L4_BLACKNH', 'D150_L4_API', 'D150_L4_AIANOLD',\n",
+       "       'D150_L4_HISPOLD', 'D_PCTPELL_PCTFLOAN', 'OPENADMP', 'UGNONDS', 'GRADS',\n",
+       "       'ACCREDCODE'],\n",
+       "      dtype='object', length=1777)"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(113556, 1777)"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style>\n",
+       "    .dataframe thead tr:only-child th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: left;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>UNITID</th>\n",
+       "      <th>OPEID</th>\n",
+       "      <th>OPEID6</th>\n",
+       "      <th>INSTNM</th>\n",
+       "      <th>CITY</th>\n",
+       "      <th>STABBR</th>\n",
+       "      <th>ZIP</th>\n",
+       "      <th>ACCREDAGENCY</th>\n",
+       "      <th>INSTURL</th>\n",
+       "      <th>NPCURL</th>\n",
+       "      <th>...</th>\n",
+       "      <th>D150_L4_WHITENH</th>\n",
+       "      <th>D150_L4_BLACKNH</th>\n",
+       "      <th>D150_L4_API</th>\n",
+       "      <th>D150_L4_AIANOLD</th>\n",
+       "      <th>D150_L4_HISPOLD</th>\n",
+       "      <th>D_PCTPELL_PCTFLOAN</th>\n",
+       "      <th>OPENADMP</th>\n",
+       "      <th>UGNONDS</th>\n",
+       "      <th>GRADS</th>\n",
+       "      <th>ACCREDCODE</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100654</td>\n",
+       "      <td>100200</td>\n",
+       "      <td>1002</td>\n",
+       "      <td>Alabama A &amp; M University</td>\n",
+       "      <td>Normal</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>35762</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.aamu.edu/</td>\n",
+       "      <td>www2.aamu.edu/scripts/netpricecalc/npcalc.htm</td>\n",
+       "      <td>...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>4210.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>1123.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100663</td>\n",
+       "      <td>105200</td>\n",
+       "      <td>1052</td>\n",
+       "      <td>University of Alabama at Birmingham</td>\n",
+       "      <td>Birmingham</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>35294-0110</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.uab.edu</td>\n",
+       "      <td>uab.studentaidcalculator.com/survey.aspx</td>\n",
+       "      <td>...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>11679.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>242.0</td>\n",
+       "      <td>6822.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100690</td>\n",
+       "      <td>2503400</td>\n",
+       "      <td>25034</td>\n",
+       "      <td>Amridge University</td>\n",
+       "      <td>Montgomery</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>36117-3553</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.amridgeuniversity.edu</td>\n",
+       "      <td>www2.amridgeuniversity.edu:9091/</td>\n",
+       "      <td>...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>279.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>319.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>100706</td>\n",
+       "      <td>105500</td>\n",
+       "      <td>1055</td>\n",
+       "      <td>University of Alabama in Huntsville</td>\n",
+       "      <td>Huntsville</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>35899</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.uah.edu</td>\n",
+       "      <td>finaid.uah.edu/</td>\n",
+       "      <td>...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>5618.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>184.0</td>\n",
+       "      <td>1853.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>100724</td>\n",
+       "      <td>100500</td>\n",
+       "      <td>1005</td>\n",
+       "      <td>Alabama State University</td>\n",
+       "      <td>Montgomery</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>36104-0271</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.alasu.edu</td>\n",
+       "      <td>www.alasu.edu/cost-aid/forms/calculator/index....</td>\n",
+       "      <td>...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>4805.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>24.0</td>\n",
+       "      <td>619.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 1777 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   UNITID    OPEID  OPEID6                               INSTNM        CITY  \\\n",
+       "0  100654   100200    1002             Alabama A & M University      Normal   \n",
+       "1  100663   105200    1052  University of Alabama at Birmingham  Birmingham   \n",
+       "2  100690  2503400   25034                   Amridge University  Montgomery   \n",
+       "3  100706   105500    1055  University of Alabama in Huntsville  Huntsville   \n",
+       "4  100724   100500    1005             Alabama State University  Montgomery   \n",
+       "\n",
+       "  STABBR         ZIP                                       ACCREDAGENCY  \\\n",
+       "0     AL       35762  Southern Association of Colleges and Schools C...   \n",
+       "1     AL  35294-0110  Southern Association of Colleges and Schools C...   \n",
+       "2     AL  36117-3553  Southern Association of Colleges and Schools C...   \n",
+       "3     AL       35899  Southern Association of Colleges and Schools C...   \n",
+       "4     AL  36104-0271  Southern Association of Colleges and Schools C...   \n",
+       "\n",
+       "                     INSTURL  \\\n",
+       "0              www.aamu.edu/   \n",
+       "1                www.uab.edu   \n",
+       "2  www.amridgeuniversity.edu   \n",
+       "3                www.uah.edu   \n",
+       "4              www.alasu.edu   \n",
+       "\n",
+       "                                              NPCURL     ...      \\\n",
+       "0      www2.aamu.edu/scripts/netpricecalc/npcalc.htm     ...       \n",
+       "1           uab.studentaidcalculator.com/survey.aspx     ...       \n",
+       "2                   www2.amridgeuniversity.edu:9091/     ...       \n",
+       "3                                    finaid.uah.edu/     ...       \n",
+       "4  www.alasu.edu/cost-aid/forms/calculator/index....     ...       \n",
+       "\n",
+       "   D150_L4_WHITENH  D150_L4_BLACKNH  D150_L4_API  D150_L4_AIANOLD  \\\n",
+       "0              NaN              NaN          NaN              NaN   \n",
+       "1              NaN              NaN          NaN              NaN   \n",
+       "2              NaN              NaN          NaN              NaN   \n",
+       "3              NaN              NaN          NaN              NaN   \n",
+       "4              NaN              NaN          NaN              NaN   \n",
+       "\n",
+       "   D150_L4_HISPOLD  D_PCTPELL_PCTFLOAN  OPENADMP  UGNONDS   GRADS  ACCREDCODE  \n",
+       "0              NaN              4210.0       2.0      NaN  1123.0      SACSCC  \n",
+       "1              NaN             11679.0       2.0    242.0  6822.0      SACSCC  \n",
+       "2              NaN               279.0       1.0      NaN   319.0      SACSCC  \n",
+       "3              NaN              5618.0       2.0    184.0  1853.0      SACSCC  \n",
+       "4              NaN              4805.0       2.0     24.0   619.0      SACSCC  \n",
+       "\n",
+       "[5 rows x 1777 columns]"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_school= df[['INSTNM','CITY','STABBR','ZIP','ACCREDAGENCY','INSTURL','NPCURL','SCH_DEG','HCM2','MAIN','NUMBRANCH',\n",
+    "'PREDDEG','HIGHDEG','CONTROL','ST_FIPS','REGION','LOCALE', 'LOCALE2', 'CCBASIC', 'CCUGPROF','CCSIZSET','HBCU',\n",
+    "'PBI','ANNHI','TRIBAL','AANAPII','HSI','NANTI','MENONLY','WOMENONLY','RELAFFIL','DISTANCEONLY','CURROPER'\n",
+    ",'TUITFTE','INEXPFTE','AVGFACSAL','PFTFAC','ALIAS','ICLEVEL','OPENADMP','ACCREDCODE','T4APPROVALDATE']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style>\n",
+       "    .dataframe thead tr:only-child th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: left;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>INSTNM</th>\n",
+       "      <th>CITY</th>\n",
+       "      <th>STABBR</th>\n",
+       "      <th>ZIP</th>\n",
+       "      <th>ACCREDAGENCY</th>\n",
+       "      <th>INSTURL</th>\n",
+       "      <th>NPCURL</th>\n",
+       "      <th>SCH_DEG</th>\n",
+       "      <th>HCM2</th>\n",
+       "      <th>MAIN</th>\n",
+       "      <th>...</th>\n",
+       "      <th>CURROPER</th>\n",
+       "      <th>TUITFTE</th>\n",
+       "      <th>INEXPFTE</th>\n",
+       "      <th>AVGFACSAL</th>\n",
+       "      <th>PFTFAC</th>\n",
+       "      <th>ALIAS</th>\n",
+       "      <th>ICLEVEL</th>\n",
+       "      <th>OPENADMP</th>\n",
+       "      <th>ACCREDCODE</th>\n",
+       "      <th>T4APPROVALDATE</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Alabama A &amp; M University</td>\n",
+       "      <td>Normal</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>35762</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.aamu.edu/</td>\n",
+       "      <td>www2.aamu.edu/scripts/netpricecalc/npcalc.htm</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>9657.0</td>\n",
+       "      <td>7941.0</td>\n",
+       "      <td>7017.0</td>\n",
+       "      <td>0.7096</td>\n",
+       "      <td>AAMU</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "      <td>12/12/1965</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>University of Alabama at Birmingham</td>\n",
+       "      <td>Birmingham</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>35294-0110</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.uab.edu</td>\n",
+       "      <td>uab.studentaidcalculator.com/survey.aspx</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>10263.0</td>\n",
+       "      <td>17548.0</td>\n",
+       "      <td>10221.0</td>\n",
+       "      <td>0.9081</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "      <td>12/1/1965</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Amridge University</td>\n",
+       "      <td>Montgomery</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>36117-3553</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.amridgeuniversity.edu</td>\n",
+       "      <td>www2.amridgeuniversity.edu:9091/</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>17071.0</td>\n",
+       "      <td>7113.0</td>\n",
+       "      <td>3217.0</td>\n",
+       "      <td>1.0000</td>\n",
+       "      <td>Southern Christian University |Regions University</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "      <td>3/26/1987</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>University of Alabama in Huntsville</td>\n",
+       "      <td>Huntsville</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>35899</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.uah.edu</td>\n",
+       "      <td>finaid.uah.edu/</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>8917.0</td>\n",
+       "      <td>10619.0</td>\n",
+       "      <td>9514.0</td>\n",
+       "      <td>0.6173</td>\n",
+       "      <td>UAH |University of Alabama Huntsville</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "      <td>12/1/1965</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Alabama State University</td>\n",
+       "      <td>Montgomery</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>36104-0271</td>\n",
+       "      <td>Southern Association of Colleges and Schools C...</td>\n",
+       "      <td>www.alasu.edu</td>\n",
+       "      <td>www.alasu.edu/cost-aid/forms/calculator/index....</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>7717.0</td>\n",
+       "      <td>7742.0</td>\n",
+       "      <td>7940.0</td>\n",
+       "      <td>0.6395</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>SACSCC</td>\n",
+       "      <td>12/1/1965</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 42 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                INSTNM        CITY STABBR         ZIP  \\\n",
+       "0             Alabama A & M University      Normal     AL       35762   \n",
+       "1  University of Alabama at Birmingham  Birmingham     AL  35294-0110   \n",
+       "2                   Amridge University  Montgomery     AL  36117-3553   \n",
+       "3  University of Alabama in Huntsville  Huntsville     AL       35899   \n",
+       "4             Alabama State University  Montgomery     AL  36104-0271   \n",
+       "\n",
+       "                                        ACCREDAGENCY  \\\n",
+       "0  Southern Association of Colleges and Schools C...   \n",
+       "1  Southern Association of Colleges and Schools C...   \n",
+       "2  Southern Association of Colleges and Schools C...   \n",
+       "3  Southern Association of Colleges and Schools C...   \n",
+       "4  Southern Association of Colleges and Schools C...   \n",
+       "\n",
+       "                     INSTURL  \\\n",
+       "0              www.aamu.edu/   \n",
+       "1                www.uab.edu   \n",
+       "2  www.amridgeuniversity.edu   \n",
+       "3                www.uah.edu   \n",
+       "4              www.alasu.edu   \n",
+       "\n",
+       "                                              NPCURL  SCH_DEG  HCM2  MAIN  \\\n",
+       "0      www2.aamu.edu/scripts/netpricecalc/npcalc.htm      NaN   0.0     1   \n",
+       "1           uab.studentaidcalculator.com/survey.aspx      NaN   0.0     1   \n",
+       "2                   www2.amridgeuniversity.edu:9091/      NaN   0.0     1   \n",
+       "3                                    finaid.uah.edu/      NaN   0.0     1   \n",
+       "4  www.alasu.edu/cost-aid/forms/calculator/index....      NaN   0.0     1   \n",
+       "\n",
+       "        ...        CURROPER  TUITFTE  INEXPFTE  AVGFACSAL  PFTFAC  \\\n",
+       "0       ...             1.0   9657.0    7941.0     7017.0  0.7096   \n",
+       "1       ...             1.0  10263.0   17548.0    10221.0  0.9081   \n",
+       "2       ...             1.0  17071.0    7113.0     3217.0  1.0000   \n",
+       "3       ...             1.0   8917.0   10619.0     9514.0  0.6173   \n",
+       "4       ...             1.0   7717.0    7742.0     7940.0  0.6395   \n",
+       "\n",
+       "                                               ALIAS  ICLEVEL  OPENADMP  \\\n",
+       "0                                               AAMU      1.0       2.0   \n",
+       "1                                                NaN      1.0       2.0   \n",
+       "2  Southern Christian University |Regions University      1.0       1.0   \n",
+       "3              UAH |University of Alabama Huntsville      1.0       2.0   \n",
+       "4                                                NaN      1.0       2.0   \n",
+       "\n",
+       "   ACCREDCODE  T4APPROVALDATE  \n",
+       "0      SACSCC      12/12/1965  \n",
+       "1      SACSCC       12/1/1965  \n",
+       "2      SACSCC       3/26/1987  \n",
+       "3      SACSCC       12/1/1965  \n",
+       "4      SACSCC       12/1/1965  \n",
+       "\n",
+       "[5 rows x 42 columns]"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_school.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\ipykernel_launcher.py:1: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  \"\"\"Entry point for launching an IPython kernel.\n"
+     ]
+    }
+   ],
+   "source": [
+    "df_school.drop(['INSTURL','NPCURL','CITY','ZIP','STABBR','ACCREDCODE','ACCREDAGENCY','ALIAS','ICLEVEL'], axis=1, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\ipykernel_launcher.py:1: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  \"\"\"Entry point for launching an IPython kernel.\n"
+     ]
+    }
+   ],
+   "source": [
+    "df_school.drop(['SCH_DEG','LOCALE2','RELAFFIL'], axis =1, inplace = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "INSTNM                 0\n",
+       "HCM2              105963\n",
+       "MAIN                   0\n",
+       "NUMBRANCH              0\n",
+       "PREDDEG                0\n",
+       "HIGHDEG                0\n",
+       "CONTROL               23\n",
+       "ST_FIPS                1\n",
+       "REGION                 1\n",
+       "LOCALE            106409\n",
+       "CCBASIC           106409\n",
+       "CCUGPROF          106409\n",
+       "CCSIZSET          106409\n",
+       "HBCU              106409\n",
+       "PBI               106409\n",
+       "ANNHI             106409\n",
+       "TRIBAL            106409\n",
+       "AANAPII           106409\n",
+       "HSI               106409\n",
+       "NANTI             106409\n",
+       "MENONLY           106409\n",
+       "WOMENONLY         106409\n",
+       "DISTANCEONLY       76969\n",
+       "CURROPER          105963\n",
+       "TUITFTE             5625\n",
+       "INEXPFTE            5632\n",
+       "AVGFACSAL          48686\n",
+       "PFTFAC             44622\n",
+       "OPENADMP            9912\n",
+       "T4APPROVALDATE    106419\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_school.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_student = df[['UG','RET_FT4','UG25ABV','AGE_ENTRY','FIRST_GEN']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_cost = df['COSTT4_A'] #students who have signed up for Title IV"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_completion = df[['C150_4','C150_L4']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_aid = df[['FEMALE_DEBT_MDN','MALE_DEBT_MDN']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_admission = df['ADM_RATE']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_academics = df[['PCIP11','PCIP27']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_analysis = df[['UNITID','HCM2','NUMBRANCH','PREDDEG','HIGHDEG','CONTROL','ST_FIPS','REGION','LOCALE', \n",
+    "                  'CCBASIC', 'CCUGPROF','CCSIZSET','HBCU','PBI','ANNHI','TRIBAL','AANAPII','HSI','NANTI','MENONLY',\n",
+    "                  'WOMENONLY','DISTANCEONLY','CURROPER','TUITFTE','INEXPFTE','AVGFACSAL','PFTFAC','OPENADMP',\n",
+    "                  'T4APPROVALDATE','UG','RET_FT4','UG25ABV','AGE_ENTRY','FIRST_GEN','COSTT4_A','C150_4','C150_L4',\n",
+    "                  'FEMALE_DEBT_MDN','MALE_DEBT_MDN','ADM_RATE','PCIP11','PCIP27']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(113556, 42)"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style>\n",
+       "    .dataframe thead tr:only-child th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: left;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>UNITID</th>\n",
+       "      <th>HCM2</th>\n",
+       "      <th>NUMBRANCH</th>\n",
+       "      <th>PREDDEG</th>\n",
+       "      <th>HIGHDEG</th>\n",
+       "      <th>CONTROL</th>\n",
+       "      <th>ST_FIPS</th>\n",
+       "      <th>REGION</th>\n",
+       "      <th>LOCALE</th>\n",
+       "      <th>CCBASIC</th>\n",
+       "      <th>...</th>\n",
+       "      <th>AGE_ENTRY</th>\n",
+       "      <th>FIRST_GEN</th>\n",
+       "      <th>COSTT4_A</th>\n",
+       "      <th>C150_4</th>\n",
+       "      <th>C150_L4</th>\n",
+       "      <th>FEMALE_DEBT_MDN</th>\n",
+       "      <th>MALE_DEBT_MDN</th>\n",
+       "      <th>ADM_RATE</th>\n",
+       "      <th>PCIP11</th>\n",
+       "      <th>PCIP27</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>100654</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>4</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>18.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>20.277133825</td>\n",
+       "      <td>0.3887357227</td>\n",
+       "      <td>20809.0</td>\n",
+       "      <td>0.3081</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>16000</td>\n",
+       "      <td>13750</td>\n",
+       "      <td>0.6538</td>\n",
+       "      <td>0.0634</td>\n",
+       "      <td>0.0094</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>100663</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>4</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>15.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>23.58415642</td>\n",
+       "      <td>0.3564593301</td>\n",
+       "      <td>22232.0</td>\n",
+       "      <td>0.5462</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>14750</td>\n",
+       "      <td>13750</td>\n",
+       "      <td>0.6043</td>\n",
+       "      <td>0.0133</td>\n",
+       "      <td>0.0124</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>100690</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>4</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>21.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>33.065934066</td>\n",
+       "      <td>0.5285714286</td>\n",
+       "      <td>12133.0</td>\n",
+       "      <td>0.4000</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>12500</td>\n",
+       "      <td>9500</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.0000</td>\n",
+       "      <td>0.0000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>100706</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>4</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>15.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>23.152713891</td>\n",
+       "      <td>0.3137931034</td>\n",
+       "      <td>20999.0</td>\n",
+       "      <td>0.4935</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>15958</td>\n",
+       "      <td>14316</td>\n",
+       "      <td>0.8120</td>\n",
+       "      <td>0.0315</td>\n",
+       "      <td>0.0198</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>100724</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>4</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>5.0</td>\n",
+       "      <td>12.0</td>\n",
+       "      <td>18.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>20.201285657</td>\n",
+       "      <td>0.369258754</td>\n",
+       "      <td>18100.0</td>\n",
+       "      <td>0.2696</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>16639</td>\n",
+       "      <td>14250</td>\n",
+       "      <td>0.4639</td>\n",
+       "      <td>0.0567</td>\n",
+       "      <td>0.0302</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 42 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   UNITID  HCM2  NUMBRANCH  PREDDEG  HIGHDEG  CONTROL  ST_FIPS  REGION  \\\n",
+       "0  100654   0.0          1        3        4      1.0      1.0     5.0   \n",
+       "1  100663   0.0          1        3        4      1.0      1.0     5.0   \n",
+       "2  100690   0.0          1        3        4      2.0      1.0     5.0   \n",
+       "3  100706   0.0          1        3        4      1.0      1.0     5.0   \n",
+       "4  100724   0.0          1        3        4      1.0      1.0     5.0   \n",
+       "\n",
+       "   LOCALE  CCBASIC   ...       AGE_ENTRY     FIRST_GEN  COSTT4_A  C150_4  \\\n",
+       "0    12.0     18.0   ...    20.277133825  0.3887357227   20809.0  0.3081   \n",
+       "1    12.0     15.0   ...     23.58415642  0.3564593301   22232.0  0.5462   \n",
+       "2    12.0     21.0   ...    33.065934066  0.5285714286   12133.0  0.4000   \n",
+       "3    12.0     15.0   ...    23.152713891  0.3137931034   20999.0  0.4935   \n",
+       "4    12.0     18.0   ...    20.201285657   0.369258754   18100.0  0.2696   \n",
+       "\n",
+       "   C150_L4  FEMALE_DEBT_MDN  MALE_DEBT_MDN  ADM_RATE  PCIP11  PCIP27  \n",
+       "0      NaN            16000          13750    0.6538  0.0634  0.0094  \n",
+       "1      NaN            14750          13750    0.6043  0.0133  0.0124  \n",
+       "2      NaN            12500           9500       NaN  0.0000  0.0000  \n",
+       "3      NaN            15958          14316    0.8120  0.0315  0.0198  \n",
+       "4      NaN            16639          14250    0.4639  0.0567  0.0302  \n",
+       "\n",
+       "[5 rows x 42 columns]"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_analysis1 = df_analysis[['CONTROL','FIRST_GEN']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "CONTROL        23\n",
+       "FIRST_GEN    2381\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis1.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style>\n",
+       "    .dataframe thead tr:only-child th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: left;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>CONTROL</th>\n",
+       "      <th>FIRST_GEN</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>0.3887357227</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>0.3564593301</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2</td>\n",
+       "      <td>0.5285714286</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>0.3137931034</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>1</td>\n",
+       "      <td>0.369258754</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   CONTROL     FIRST_GEN\n",
+       "0        1  0.3887357227\n",
+       "1        1  0.3564593301\n",
+       "2        2  0.5285714286\n",
+       "3        1  0.3137931034\n",
+       "4        1   0.369258754"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\ipykernel_launcher.py:1: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  \"\"\"Entry point for launching an IPython kernel.\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\pandas\\core\\generic.py:5233: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  self._update_inplace(new_data)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2862: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  exec(code_obj, self.user_global_ns, self.user_ns)\n"
+     ]
+    }
+   ],
+   "source": [
+    "df_analysis1['FIRST_GEN'][df_analysis1['FIRST_GEN'].isnull()] = 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\ipykernel_launcher.py:1: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  \"\"\"Entry point for launching an IPython kernel.\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\pandas\\core\\generic.py:5233: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  self._update_inplace(new_data)\n",
+      "C:\\Users\\SZXS4T\\AppData\\Local\\Continuum\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:2862: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  exec(code_obj, self.user_global_ns, self.user_ns)\n"
+     ]
+    }
+   ],
+   "source": [
+    "df_analysis1['CONTROL'][df_analysis1['CONTROL'].isnull()] = 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "CONTROL      0\n",
+       "FIRST_GEN    0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis1.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_analysis1 = df_analysis1[df_analysis1['FIRST_GEN']!=0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_analysis1 = df_analysis1[df_analysis1['CONTROL']!=0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "CONTROL      0\n",
+       "FIRST_GEN    0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis1.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(111152, 2)"
+      ]
+     },
+     "execution_count": 37,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis1.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style>\n",
+       "    .dataframe thead tr:only-child th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: left;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>CONTROL</th>\n",
+       "      <th>FIRST_GEN</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.3887357227</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.3564593301</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2.0</td>\n",
+       "      <td>0.5285714286</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.3137931034</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.369258754</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   CONTROL     FIRST_GEN\n",
+       "0      1.0  0.3887357227\n",
+       "1      1.0  0.3564593301\n",
+       "2      2.0  0.5285714286\n",
+       "3      1.0  0.3137931034\n",
+       "4      1.0   0.369258754"
+      ]
+     },
+     "execution_count": 38,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df_analysis1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df_analysis1 = df_analysis1[df_analysis1['FIRST_GEN']!='PrivacySuppressed']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x= df_analysis1['CONTROL']\n",
+    "y= df_analysis1['FIRST_GEN']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.collections.PathCollection at 0x2dfec828>"
+      ]
+     },
+     "execution_count": 41,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "plt.scatter(x,y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nM+tl/x+u/M2SfZC3fwAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0xcbae7da0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.title(\"Share of First-Generation Students in Publicly & Privately Owned Institutions\")\n",
+    "plt.xlabel(\"Control of Institution |1 = Public, 2 = Private Non-profit, 3 = Private For-Profit\")\n",
+    "plt.ylabel(\"x100 % of First-Generation Students\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
